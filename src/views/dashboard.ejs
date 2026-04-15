@@ -1,0 +1,173 @@
+<%- include('components/navbar') %>
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+
+<script src="/javascripts/main.js"></script>
+
+<div class="container">
+
+<h2>Borrow Items</h2>
+
+<input 
+id="search"
+placeholder="Search item..."
+onkeyup="searchItem()"
+>
+
+<form action="/items/add" method="POST">
+
+<select name="type" class="form-control">
+
+<option value="book">Book</option>
+
+<option value="electronics">Laptop</option>
+
+<option value="money">Money</option>
+
+<option value="box">Box</option>
+
+<option value="other">Other</option>
+
+</select>
+
+<input
+class="form-control"
+name="itemName"
+placeholder="Item name"
+required>
+
+<input
+class="form-control"
+name="borrower"
+placeholder="Borrower"
+required>
+
+<input
+class="form-control"
+type="date"
+name="borrowDate"
+required>
+
+<button class="add-btn">
+Add
+</button>
+
+</form>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Item</th>
+
+<th>Borrower</th>
+
+<th>Date</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% items.forEach(item=>{ %>
+
+<tr>
+
+<td class="item-cell">
+
+<% if(item.type==="book"){ %>
+<img src="/images/book.png" class="icon">
+<% } %>
+
+<% if(item.type==="electronics"){ %>
+<img src="/images/laptop.png" class="icon">
+<% } %>
+
+<% if(item.type==="money"){ %>
+<img src="/images/money.png" class="icon">
+<% } %>
+
+<% if(item.type==="box"){ %>
+<img src="/images/box.png" class="icon">
+<% } %>
+
+<%=item.itemName%>
+
+</td>
+
+<td>
+<%=item.borrower%>
+</td>
+
+<td>
+<%=item.borrowDate.toLocaleDateString()%>
+</td>
+
+<td>
+
+<% if(item.status=="Chưa trả"){ %>
+
+<span class="red">
+<%=item.status%>
+</span>
+
+<% }else{ %>
+
+<span class="green">
+<%=item.status%>
+</span>
+
+<% } %>
+
+</td>
+
+<td>
+
+<a
+class="btn"
+onclick="return confirmReturn()"
+href="/items/return/<%=item._id%>">
+
+Return
+
+</a>
+
+<a
+class="delete"
+onclick="return confirmDelete()"
+href="/items/delete/<%=item._id%>">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+<% if(items.length==0){ %>
+
+<div class="empty">
+
+<img src="/images/empty.png" width="150">
+
+<p>No items yet</p>
+
+</div>
+
+<% } %>
+
+</div>
